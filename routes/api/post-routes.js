@@ -1,19 +1,19 @@
 const router = require('express').Router();
 const { Post } = require('../../models/');
 const withAuth = require('../../utils/auth');
-const sequelize = require('../../config/connection');
+//const sequelize = require('../../config/connection');
 
-// router.get('/', async (req, res) => {
-//   try { 
-//     const postData = await Post.findAll();
+router.get('/', async (req, res) => {
+try { 
+const postData = await Post.findAll();
     
-//     const posts = postData.map((post) => post.get({ plain: true }));
+const posts = postData.map((post) => post.get({ plain: true }));
   
-//       res.render('all-posts', { posts, loggedIn: req.session.loggedIn });
-//     } catch (err) {
-//       res.status(500).json(err);
-//     }
-//   });
+     res.render('all-posts', { posts, loggedIn: req.session.loggedIn });
+     } catch (err) {
+      res.status(500).json(err);
+    }
+   });
 
 
 
@@ -30,7 +30,7 @@ router.post('/', withAuth, async (req, res) => {
 
 router.put('/:id', withAuth, async (req, res) => {
   try {
-    const [affectedRows] = await Post.update(req.body, {
+    const [affectedRows] = await Post.update(req.post_body, {
       where: {
         id: req.params.id,
       },
