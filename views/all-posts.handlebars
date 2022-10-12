@@ -1,5 +1,13 @@
-<div class="posts">
-  {{#each posts}}
-
+<div class="row">
+  <div class="col-auto">
+  <h2>{{user.username}}! </h2>
+  </div>
+</div>
+<br>
+{{#if posts.length}}
+<div class="card flex-column">
+  {{#each posts as |post|}}
+  {{> editItem post}}
   {{/each}}
 </div>
+{{/if}}

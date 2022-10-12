@@ -1,6 +1,19 @@
 <div class="post card">
+  <h2 class="card-header">New Post</h2>
   <form id="new-post-form" class="card-body">
+    <input type="text" name="post-id" value="{{post.id}}"/>
+    <div>
+      <label class="form-label">Title</label>
+      <input type="text" class="form-input", name="post-title" />
+    </div>
 
+    <div>
+      <label class="form-label">Body:</label>
+      <textarea class="form-textarea form-input" name="post-body"></textarea> 
+    </div>
+
+      <button class="btn btn-primary">Create</button>
+   
   </form>
 </div>
 
