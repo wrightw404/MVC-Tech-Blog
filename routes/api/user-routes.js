@@ -1,5 +1,11 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post } = require('../../models');
+const SequelizeStore = require('connect-session-sequelize')(session.store);
+const withAuth = require('../../utils/auth');
+const session = require('express-session');
+
+
+
 
 router.post('/', async (req, res) => {
   try {
@@ -59,6 +65,24 @@ router.post('/logout', (req, res) => {
     });
   } else {
     res.status(404).end();
+  }
+});
+
+router.delete('/:id', withAuth, async (req, res) => {
+  try {
+    const [affectedRows] = User.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (affectedRows > 0) {
+      res.status(200).end();
+    } else {
+      res.status(404).end();
+    }
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
