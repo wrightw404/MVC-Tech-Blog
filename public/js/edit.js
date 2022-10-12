@@ -6,16 +6,16 @@ console.log(post_id);
 const editFormHandler = async (event) => {
   event.preventDefault();
 
-  const post_title = document.querySelector('input[name="post-title"]').value;
+  const title = document.querySelector('input[name="post-title"]').value;
   const post_body = document.querySelector('textarea[name="post-body"]').value;
 
-  console.log(post_title);
+  console.log(title);
   console.log(post_body);
 
   const response = await fetch(`/api/post/${post_id}`, {
     method: 'PUT',
     body: JSON.stringify({
-        post_title,
+        title,
         post_body,
     }),
     headers: {
