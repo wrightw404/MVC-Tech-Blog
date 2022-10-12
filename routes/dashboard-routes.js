@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { Post } = require('../models/');
+const sequelize = require('../config/connection')
+const { Post, User, Comment } = require('../models/');
 const withAuth = require('../utils/auth');
 
 router.get('/', withAuth, async (req, res) => {
@@ -8,13 +9,34 @@ router.get('/', withAuth, async (req, res) => {
       where: {
         userId: req.session.userId,
       },
+        attributes: [
+          'id',
+          'post_body',
+          'title',
+          'created_at',
+        ],
+        include: [
+          {
+            model: Comment,
+            attributes: ['id','comment_body', 'post_id', 'user_id', 'created_at'],
+            include: {
+              model: User, 
+              attributes: ['username']
+            }
+          },
+          {
+            model: User,
+            attributes: ['username']
+          },
+        ],
+
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
 
     res.render('all-posts-admin', {
       layout: 'dashboard',
-      posts,
+      posts, 
     });
   } catch (err) {
     res.redirect('login');
@@ -36,7 +58,8 @@ router.get('/edit/:id', withAuth, async (req, res) => {
 
       res.render('edit-post', {
         layout: 'dashboard',
-        post,
+        post, 
+        loggedIn: true,
       });
     } else {
       res.status(404).end();
